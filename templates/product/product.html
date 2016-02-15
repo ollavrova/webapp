@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row row-content">
+            <div class="col-xs-12">
+                <div class="media">
+                    <div class="media-body">
+                        <h1 class="media-heading">{{ product.name}}
+                            <span class="badge">{{ product.price }}</span></h1>
+                        <p>{{ product.description}}</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+{% endblock content %}
