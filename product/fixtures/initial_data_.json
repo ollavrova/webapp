@@ -1,0 +1,140 @@
+[
+  {
+    "model": "product.product",
+    "pk": 1,
+    "fields": {
+      "description": "voluptate vitae pariatur facere nostrumaut qui quidem error quia impeditmolestiae qui voluptates voluptatem non quas modi nesciunt eveniet in eligendi reprehenderitqui qui ipsum et aliquid consectetur omnis sit omnisquis necessitatibus voluptatum aut quodmolestias a iste ducimus consequatur impedit etut et qui at qui ullam corruptiiusto animi rerum reprehenderit voluptatem voluptate dolore rationeut necessitatibus et quia assumenda sit reprehenderitnumquam adipisci velit repellat consequatur expedita",
+      "price": 229.09,
+      "modified_at": "1985-12-31T19:06:35.293Z",
+      "created_at": "1993-02-11T10:41:20.626Z",
+      "name": "saepe aut repudiandae ea est temporibus sapienteest qui omnis nesciunt dicta iust",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 2,
+    "fields": {
+      "description": "dignissimos ea quaeratnihil adipisci repellendus aspernatur eos accusantium abquos quo inventore at in dignissimos voluptatedignissimos veniam qui sed quae modi etvoluptate et quae impedit voluptatem corrupti iste laboriosam est excepturiid et consequuntur suntquo molestias ea ut recusandae earum veniam reprehenderitlaborum ut tenetur nostrum ut iusto nulla sit doloreut sint perferendis quas quis laudantium qui reprehenderit doloremque ratione unde et fugarerum non et nonplaceat esse rem id",
+      "price": 631.88,
+      "modified_at": "2003-12-10T11:15:45.859Z",
+      "created_at": "1990-08-26T03:37:24.885Z",
+      "name": "similique molestiae dolorem est quiaodit ut non dolores minima aliquamat reprehenderit",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 3,
+    "fields": {
+      "description": "atque inventore sapiente vel deleniti rerum soluta veroasperiores aut nisi tenetur unde enim in et temporibusearum numquam aut nam officiis et est soluta atquequidem veniam porro sintassumenda blanditiis rerum cupiditate culpa velit omnis velit maiores temporibus laudantium aest dolore quisquamquas et sunt soluta et reiciendis sint ducimus delenitilabore accusamus exercitationem eius expedita quivoluptatem accusamus illum modi dolores ullam magnam et quiquo ipsam similique eos odit",
+      "price": 668.56,
+      "modified_at": "2011-04-16T07:40:47.876Z",
+      "created_at": "1981-08-11T09:10:36.673Z",
+      "name": "sed perferendis aliasqui consequatur amet rerum totam rerum adipisci perferendis omnisautem",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 4,
+    "fields": {
+      "description": "impedit accusantium enim quos corrupti beatae estinventore molestiae commodi et voluptatem quis sitexercitationem quidem nemo minus laudantium voluptatecorporis praesentium qui qui ut nesciunt asperiores culpa animi deleniti molestiae fuga fugit aut esse est minima siterror fuga laboreeos ut quia dolores quidem eum natus id voluptatem nostruma nobis facere facilisvoluptatum consequatur atque mollitia officiis a labore temporeet sunt aliquam repellendus harum dolores temporibus quis voluptateincidunt molestiae inventore doloribus vitae non similique provident",
+      "price": 934.05,
+      "modified_at": "1982-02-20T04:48:26.419Z",
+      "created_at": "2001-10-23T23:09:07.294Z",
+      "name": "laboriosam deleniti magnam sint dolores quia autem beataeomnis dicta voluptatum inventore quam",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 5,
+    "fields": {
+      "description": "recusandae est tempore nesciunt facere cumquenobis soluta saepe libero accusantiumet vitae tempore dicta enim omnis ipsam maxime estex facilis consequatur aut sint ipsum animi quos ut consecteturrerum eveniet voluptas omnis hic aperiamvelit blanditiis autem facere nam consequatur odit doloresquia similique velit a impedit et omnis minima facilis erroreligendi modi nostrum laudantiumdolorum nobis quo blanditiis sed expedita aut amet laborumcum alias earum voluptatibusut voluptatibus voluptatum voluptatem maxime hic",
+      "price": 6.77,
+      "modified_at": "2002-03-21T15:01:17.679Z",
+      "created_at": "2011-10-10T10:57:46.831Z",
+      "name": "ut rerum itaque omnisaut consequatur porro velit itaque animi temporibus veritatisvoluptatemm",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 6,
+    "fields": {
+      "description": "placeat inventore ut qui accusamus eaque velit quia quiaut rem perferendis voluptas fuga quonon velit sapiente cum nostrumvoluptates molestiae accusantium aut tenetur repudiandae aliquid et sunt voluptas ea consecteturveniam ducimus nihil doloremque non corporis et id blanditiisquae autem id et vel quo pariatur odio eaqui tempore veritatis molestiasoccaecati est nam nemo quasi reiciendis omnis sed dicta ducimus sed id est doloret accusamus sit maiores occaecatitempora omnis et vitae et quia repudiandae commodi temporepossimus eos liberofacilis nulla aut aliquid dolores dolore",
+      "price": 701.10,
+      "modified_at": "1986-11-18T17:00:33.976Z",
+      "created_at": "1992-11-16T17:37:54.533Z",
+      "name": "voluptatem qui voluptatum rem",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 7,
+    "fields": {
+      "description": "ut provident et consequaturtempore consequatur voluptatum repellendus nisidolorem tenetur et eaet veniam repellendus optio ipsa autut dolores deleniti optio veniam officia qui in molestiae non doloremillum cumque aut non sunt aratione tenetur facere numquam rerum doloribus temporibus blanditiis voluptatem inhic repellendus impeditqui dolorem ut ipsam numquam consequuntur doloribus velit",
+      "price": 892.99,
+      "modified_at": "2014-09-11T18:01:05.516Z",
+      "created_at": "2006-11-27T08:06:06.785Z",
+      "name": "illo et explicaboquod natus praesentium aut totam etet",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 8,
+    "fields": {
+      "description": "necessitatibus et dignissimos tenetur omnis asperiores perferendis voluptatem nonet et cum fugit aliquam facere error enim veritatisest et eaque ipsum esttempore non omnis voluptatem qui quis architecto exercitationem tempora esteaque saepe quos praesentium labore veritatis molestiae excepturiinventore illo reiciendis iusto possimus provident consequatur alias ad blanditiis nobis illo laborie",
+      "price": 698.74,
+      "modified_at": "2006-06-27T20:25:47.063Z",
+      "created_at": "2007-01-23T11:49:35.536Z",
+      "name": "aperiam voluptatum ducimus nemoaut molestiae ab cumqueomnis sed dolor consequatur consectetur",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 9,
+    "fields": {
+      "description": "voluptatem a quo consequatur provident minima aut debitis quasiea expedita omnisipsum vero repudiandae quasi quam molestiae delectus saepeamet et etest cum a et hic enim eos quiaquis illum temporibus nobis doloribus corruptidolorum ipsa porro accusamus ut molestiae illum porro est ducimus dicta non quidemmagni ullam est sapiente ut ipsamlaudantium id sapiente quam aut voluptatumdelectus aut aperiam non est dolorum nihil magnamvelit harum non ipsam expedita eum",
+      "price": 391.55,
+      "modified_at": "2005-01-09T05:14:06.315Z",
+      "created_at": "1987-02-16T09:02:26.883Z",
+      "name": "facilis ipsum earum inventore quibusdam cupiditate id repudiandae ametet ut soluta quiete",
+      "slug": ""
+    }
+  },
+  {
+    "model": "product.product",
+    "pk": 10,
+    "fields": {
+      "description": "animi in sit quaerem natus ex quiadoloribus natus molestiae dolor ut neque ut facilis qui quidem cum inventore similiqueea possimus vero id numquamrecusandae et quod possimus at accusantium beatae nulla culpadebitis omnis adharum modi et architecto qui quos porro excepturi aliquam aperiameaque magni est nihil teneturquia rerum explicabo molestiaeut blanditiis minus aut consectetur molestias",
+      "price": 359.44,
+      "modified_at": "2002-11-07T16:34:14.064Z",
+      "created_at": "2007-07-23T09:05:22.075Z",
+      "name": "tempore nulla neque quis at etquasi sed quis non non mollitia nullaullam nesciunt a placeat",
+      "slug": ""
+    }
+  },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2016-02-05T11:44:25.430Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$12000$YLvu1hufQe5N$Yz29siaHHduntfDA4R7RrH5KfoLuAiBkV51ITEQRvnM=",
+            "email": "info0@example.com",
+            "date_joined": "2016-02-05T11:44:25.430Z"
+        }
+    }
+]
