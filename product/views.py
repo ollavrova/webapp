@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -7,10 +8,22 @@ from .models import Product
 from django.template import RequestContext
 from django.contrib import messages
 from product.forms import CommentForm
+from webapp.settings import PER_PAGE
 
 
 def products(request):
-    products = Product.objects.all()
+    product_list = Product.objects.all()
+    paginator = Paginator(product_list, PER_PAGE)
+
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        products = paginator.page(paginator.num_pages)
     return render(request, 'product/index.html', {
         'products': products,
     })

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 LOG_FILE = os.path.join(BASE_DIR + '/log/log.txt')
+PER_PAGE = 3
 
 SITE_ID = 1
 

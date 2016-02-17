@@ -1,7 +1,7 @@
 # [Start Bootstrap](http://startbootstrap.com/) - [Shop Item](http://startbootstrap.com/template-overviews/shop-item/)
 
 [Shop Item](http://startbootstrap.com/template-overviews/shop-item/) is a basic HTML store item template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
-
+[Shop HomePage](http://startbootstrap.com/template-overviews/shop-homepage/)
 ## Getting Started
 
 To begin using this template, choose one of the following options to get started:

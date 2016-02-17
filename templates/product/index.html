@@ -15,24 +15,40 @@
         <div class="col-md-9">
             <div class="row">
                 {% if products %}
-{#                    <h1>List of products:</h1>#}
                     {% for product in products %}
-                        <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="col-md-9">
                             <div class="thumbnail">
-                                  <img src="http://placehold.it/320x150" alt="">
-                                <div class="caption">
+                                <div class="caption-full">
                                     <h4 class="pull-right">${{ product.price }}</h4>
-                                    <h4><a href='{% url "product:product_view" product.slug %}' data-toggle="tooltip"
-                                           title="{{ product.name }}">{{ product.name| truncatewords_html:4 }}</a>
+                                    <h4><a href="#">{{ product.name | truncatewords_html:4 }}</a>
                                     </h4>
-                                    <p>{{ product.description | truncatewords_html:8 }}  </p>
+
+                                    <p>{{ product.description | truncatewords_html:8 }}</p>
                                 </div>
                                 <div class="ratings">
                                     <p class="pull-right">{{ product.comments.count }} reviews</p>
+
+                                    <p id="likes">{{ product.likes.count }} likes</p>
                                 </div>
                             </div>
                         </div>
+
                     {% endfor %}
+                    <div class="pagination">
+    <span class="step-links">
+        {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        </span>
+
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
                 {% else %}
                     There is no products yet...
                 {% endif %}
