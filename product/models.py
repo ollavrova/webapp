@@ -13,6 +13,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField()
     likes = models.ManyToManyField(User, related_name='likes')
+    like_amount = models.PositiveIntegerField(default=0)
 
     @property
     def total_likes(self):
@@ -22,12 +23,16 @@ class Product(models.Model):
         """
         return self.likes.count()
 
+    def set_like_amount(self):
+        self.like_amount = self.total_likes
+
     def __unicode__(self):
         return str(self.id)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         self.modified_at = timezone.now()
+        self.like_amount = self.total_likes
         super(Product, self).save(*args, **kwargs)
 
 

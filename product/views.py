@@ -1,6 +1,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models.functions import Length
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -12,7 +13,15 @@ from webapp.settings import PER_PAGE
 
 
 def products(request):
-    product_list = Product.objects.all()
+    sort = request.GET.get('sort', None)
+    if sort == 'like':
+        # product_list = Product.objects.order_by(Length('likes').asc())
+        product_list = Product.objects.order_by('like_amount')
+    elif sort == '-like':
+        # product_list = Product.objects.order_by(Length('likes').desc())
+        product_list = Product.objects.order_by('-like_amount')
+    else:
+        product_list = Product.objects.all()
     paginator = Paginator(product_list, PER_PAGE)
 
     page = request.GET.get('page')
@@ -31,11 +40,10 @@ def products(request):
 
 def product_view(request, slug):
     now = timezone.now()
-    # product = Product.objects.filter(slug__exact=slug)[0]
     product = get_object_or_404(Product, slug=slug)
     if request.method == 'POST':
         form = CommentForm(request.POST or None)
-        if form.is_valid():  # and request.is_ajax():
+        if form.is_valid():
             comment = form.save(commit=False)
             comment.product = product
             try:
@@ -52,24 +60,19 @@ def product_view(request, slug):
 
 @login_required
 def like(request, slug):
-    # import ipdb; ipdb.set_trace()
+    user = request.user
+    product = get_object_or_404(Product, slug=slug)
+    context = dict()
     if request.method == 'POST':
-        user = request.user
-        # slug = request.POST.get('slug', None)
-        # product = Product.objects.filter(slug__exact=slug)[0]
-        product = get_object_or_404(Product, slug=slug)
-
         if product.likes.filter(id=user.id).exists():
-            # user has already liked this company
-            # remove like/user
             product.likes.remove(user)
             message = 'You disliked this'
-            messages.success(request, 'You disliked this')
+            messages.success(request, message)
         else:
-            # add a new like for a company
             product.likes.add(user)
             message = 'You liked this'
-            messages.success(request, 'You liked this')
-
-    ctx = {'likes_count': product.total_likes, 'message': message}
-    return HttpResponse(json.dumps(ctx), content_type='application/json')
+            messages.success(request, message)
+        product.save()
+        context['message'] = message
+    context['likes_count'] = product.total_likes
+    return HttpResponse(json.dumps(context), content_type='application/json')

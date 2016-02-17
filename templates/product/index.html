@@ -3,24 +3,23 @@
 {% block content %}
     <div class="row">
 
-        <div class="col-md-3">
-            <p class="lead">Sorting</p>
-
-            <div class="list-group">
-                <a href="#" class="list-group-item">Sort by likes</a>
-                <a href="#" class="list-group-item">Sort by added</a>
-                <a href="#" class="list-group-item">Sort by modified</a>
+        <div class="col-md-2">
+            <div>Sorting by likes
+                <p>
+                <strong> <a href="{% url 'product:products' %}?sort=like" class="form-group-item lead"> &uArr;</a></strong>
+                <strong> <a href="{% url 'product:products' %}?sort=-like" class="form-group-item lead"> &dArr;</a></strong>
+                </p>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="row">
-                {% if products %}
+    {% if products %}
                     {% for product in products %}
                         <div class="col-md-9">
                             <div class="thumbnail">
                                 <div class="caption-full">
                                     <h4 class="pull-right">${{ product.price }}</h4>
-                                    <h4><a href="#">{{ product.name | truncatewords_html:4 }}</a>
+                                    <h4><a href="{% url 'product:product_view' product.slug %}">{{ product.name | truncatewords_html:4 }}</a>
                                     </h4>
 
                                     <p>{{ product.description | truncatewords_html:8 }}</p>
@@ -32,26 +31,25 @@
                                 </div>
                             </div>
                         </div>
+                  {% endfor %}
+                  <div class="pagination">
+                    <span class="step-links">
+                        {% if products.has_previous %}
+                            <a href="?page={{ products.previous_page_number }}">previous</a>
+                        {% endif %}
 
-                    {% endfor %}
-                    <div class="pagination">
-    <span class="step-links">
-        {% if products.has_previous %}
-            <a href="?page={{ products.previous_page_number }}">previous</a>
-        {% endif %}
+                        <span class="current">
+                            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                        </span>
 
-        <span class="current">
-            Page {{ products.number }} of {{ products.paginator.num_pages }}.
-        </span>
-
-        {% if products.has_next %}
-            <a href="?page={{ products.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
-                {% else %}
-                    There is no products yet...
-                {% endif %}
+                        {% if products.has_next %}
+                            <a href="?page={{ products.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+    {% else %}
+        There is no products yet...
+    {% endif %}
             </div>
         </div>
     </div>
