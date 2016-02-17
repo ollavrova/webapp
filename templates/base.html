@@ -14,63 +14,67 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
 </head>
 <body>
- <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{% url 'product:products' %}">Product list</a>
-                {% if user.is_authenticated %}
-                You are logged as {{ user.username }}. <a class="navbar pull-right" href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
-                {% else %}
-                <a class="navbar pull-right" href="{% url 'django.contrib.auth.views.login' %}">Login</a>
-                {% endif %}
-            </div>
-            <!-- /.navbar-collapse -->
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
-        <!-- /.container -->
-    </nav>
-  <div class="container">
 
-        {% block content %}
-             {% block messages %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} messages" role="alert">
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                 <span aria-hidden="true">&times;</span></button>
-                <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-             </div>
-            {% endfor %}
+        <a class="navbar-brand" href="{% url 'product:products' %}">Product list</a>
+
+        <div class="nav navbar-nav navbar-right"></div>
+        {% if user.is_authenticated %}
+            <div class="navbar-brand pull-right">(You are logged as {{ user.username }})</div>
+            <a class="navbar-brand pull-right" href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
+        {% else %}
+            <a class="navbar-brand pull-right" href="{% url 'django.contrib.auth.views.login' %}">Login</a>
         {% endif %}
-  {% endblock messages %}
-        {% endblock content %}
-
     </div>
- <div class="container">
-        <hr>
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy;2016</p>
-                </div>
+    <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<div class="container">
+
+    {% block content %}
+        {% block messages %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} messages" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endblock messages %}
+    {% endblock content %}
+
+</div>
+<div class="container">
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy;2016</p>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-    </div>
+</div>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
- {% block extra_head %}{% endblock extra_head %}
+{% block extra_head %}{% endblock extra_head %}
 </body>
 </html>

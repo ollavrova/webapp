@@ -19,10 +19,15 @@
                 <div class="ratings">
                     <p class="pull-right">{{ product.comments.count }} reviews</p>
 
-                    <p> X likes</p> {% if user.is_authenticated %} <a href="">Like</a> {% endif %}
+                    <p id="likes">{{ product.likes.count }} likes</p> {% if user.is_authenticated %}
+{#                    <a href="">Like</a>#}
+                    <input type="button" id="like" name="{{ product.slug }}"
+                           action="{% url 'product:like' product.slug %}" value="Like" />
+
+                {% endif %}
                 </div>
             </div>
-
+                    <div id="result_like"></div>
             {% block messages %}
                 {% if messages %}
                     {% for message in messages %}
