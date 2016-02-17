@@ -28,14 +28,7 @@
                                     <p>{{ product.description | truncatewords_html:8 }}  </p>
                                 </div>
                                 <div class="ratings">
-                                    <p class="pull-right">15 reviews</p>
-                                    <p>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        <span class="glyphicon glyphicon-star"></span>
-                                    </p>
+                                    <p class="pull-right">{{ product.comments.count }} reviews</p>
                                 </div>
                             </div>
                         </div>

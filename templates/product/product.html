@@ -1,15 +1,50 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="row row-content">
-            <div class="col-xs-12">
-                <div class="media">
-                    <div class="media-body">
-                        <h1 class="media-heading">{{ product.name}}
-                            <span class="badge">{{ product.price }}</span></h1>
-                        <p>{{ product.description}}</p>
-                    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead"><a href="{% url 'product:products' %}">back</a></p>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <div class="caption-full">
+                    <h4 class="pull-right">${{ product.price }}</h4>
+                    <h4><a href="#">{{ product.name }}</a>
+                    </h4>
+
+                    <p>{{ product.description }}</p>
+                </div>
+                <div class="ratings">
+                    <p class="pull-right">{{ product.comments.count }} reviews</p>
+
+                    <p> X likes</p> {% if user.is_authenticated %} <a href="">Like</a> {% endif %}
                 </div>
             </div>
+
+            {% block messages %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} messages" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endblock messages %}
+
+            <div class="well">
+                <form id="list-comments" action="{% url 'product:product_view' product.slug %}" method="post">
+                    {% csrf_token %}
+                    {% include "product/add_comment.html" %}
+                </form>
             </div>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block extra_head %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock %}

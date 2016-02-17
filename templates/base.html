@@ -14,7 +14,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    {% block extra_head %}{% endblock extra_head %}
+
 
 </head>
 <body>
@@ -29,21 +29,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Product list</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-{#                    <li>#}
-{#                        <a href="#">About</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="#">Services</a>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        <a href="#">Contact</a>#}
-{#                    </li>#}
-                </ul>
+                <a class="navbar-brand" href="{% url 'product:products' %}">Product list</a>
+                {% if user.is_authenticated %}
+                You are logged as {{ user.username }}. <a class="navbar pull-right" href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
+                {% else %}
+                <a class="navbar pull-right" href="{% url 'django.contrib.auth.views.login' %}">Login</a>
+                {% endif %}
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -51,11 +42,35 @@
     </nav>
   <div class="container">
 
-        {% block content %}{% endblock content %}
+        {% block content %}
+             {% block messages %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} messages" role="alert">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span></button>
+                <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+             </div>
+            {% endfor %}
+        {% endif %}
+  {% endblock messages %}
+        {% endblock content %}
 
     </div>
+ <div class="container">
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy;2016</p>
+                </div>
+            </div>
+        </footer>
 
-<script src="{% static 'jquery/jquery.js' %}"></script>
+    </div>
+<script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+ {% block extra_head %}{% endblock extra_head %}
 </body>
 </html>
