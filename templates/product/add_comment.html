@@ -1,5 +1,5 @@
-<div id="comment-form">
-    {% for comment in product.comments.all %}
+<div id="comment-form">{% if comment_list %}
+    {% for comment in comment_list %}
         <div class="row">
             <div class="col-md-12">
                 {{ comment.user }}
@@ -8,7 +8,7 @@
             </div>
         </div>
         <hr>
-    {% endfor %}
+    {% endfor %} {% endif %}
 
     <div class="form-group">
              {% if form.user.errors %} <div class="form-group">

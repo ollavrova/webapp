@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('#like').click(function(){
       $.ajax({
                type: "POST",
-                url: $(this).attr('action'),
+               url: $(this).attr('action'),
                data: {
                    'slug': $(this).attr('name'),
                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
@@ -23,7 +23,8 @@ $(document).ready(function () {
                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                        '<span aria-hidden="true">&times;</span></button><p class="success">'+
                        response.message + '</p></div>');
-                   $('#likes').text(response.likes_count);
+                   $('#likes').text(response.likes_count+' likes');
+                   $('#like').val(response.act);
                 },
                 error: function(rs, e) {
                     $('#result_like').text(e);

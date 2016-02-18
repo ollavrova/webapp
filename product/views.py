@@ -5,12 +5,17 @@ from django.db.models.functions import Length
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import Product
+from .models import Product, Comment
 from django.template import RequestContext
 from django.contrib import messages
 from product.forms import CommentForm
 from webapp.settings import PER_PAGE
 
+
+from datetime import datetime, timedelta, time
+
+today = datetime.now()
+last_day = today - timedelta(hours=24)
 
 def products(request):
     sort = request.GET.get('sort', None)
@@ -53,8 +58,13 @@ def product_view(request, slug):
                 messages.error(request, e.message)
     else:
         form = CommentForm()
+    comment_list = Comment.objects.filter(product__id=product.id,
+                                          created_at__lte=last_day,
+                                          created_at__gte=today).\
+                                            order_by('-created_at')
     return render(request, 'product/product.html',
-                  {'product': product, 'now': now, 'form': form},
+                  {'product': product, 'now': now, 'form': form,
+                   'comment_list': comment_list},
                   RequestContext(request))
 
 
@@ -67,12 +77,15 @@ def like(request, slug):
         if product.likes.filter(id=user.id).exists():
             product.likes.remove(user)
             message = 'You disliked this'
+            act = 'Like'
             messages.success(request, message)
         else:
             product.likes.add(user)
             message = 'You liked this'
+            act = 'Dislike'
             messages.success(request, message)
         product.save()
         context['message'] = message
+        context['act'] = act
     context['likes_count'] = product.total_likes
     return HttpResponse(json.dumps(context), content_type='application/json')

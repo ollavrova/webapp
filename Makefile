@@ -2,7 +2,7 @@ MANAGE=django-admin.py
 ROOT_DIR=`pwd`
 
 test:
-	PYTHONPATH=`pwd` DJANGO_SETTINGS_MODULE=webapp.settings $(MANAGE) test app
+	PYTHONPATH=`pwd` DJANGO_SETTINGS_MODULE=webapp.settings $(MANAGE) test
 
 run:
 	. $(ROOT_DIR)/venv/bin/activate; PYTHONPATH=`pwd` DJANGO_SETTINGS_MODULE=webapp.settings $(MANAGE) runserver

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}{{ product.name }}{% endblock title %}
 {% block content %}
 
     <div class="row">
@@ -10,14 +10,12 @@
         <div class="col-md-9">
             <div class="thumbnail">
                 <div class="caption-full">
-                    <h4 class="pull-right">${{ product.price }}</h4>
-                    <h4><a href="#">{{ product.name }}</a>
-                    </h4>
-
-                    <p>{{ product.description }}</p>
+                    <h4 class="pull-right" id="product-price">${{ product.price }}</h4>
+                    <h4><a href="#" id="product-name">{{ product.name }}</a></h4>
+                    <p id="product-description">{{ product.description }}</p>
                 </div>
                 <div class="ratings">
-                    <p class="pull-right">{{ product.comments.count }} reviews</p>
+                    <p id="comments-count" class="pull-right">{{ product.comments.count }} reviews ({{ comment_list.count }} in the last 24 hours)</p>
                     <p id="likes">{{ product.likes.count }} likes</p>
                     {% if user.is_authenticated %}
                         <input type="button" id="like" name="{{ product.slug }}"
