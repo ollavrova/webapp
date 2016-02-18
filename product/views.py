@@ -12,10 +12,11 @@ from product.forms import CommentForm
 from webapp.settings import PER_PAGE
 
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 today = datetime.now()
 last_day = today - timedelta(hours=24)
+
 
 def products(request):
     sort = request.GET.get('sort', None)
@@ -58,10 +59,9 @@ def product_view(request, slug):
                 messages.error(request, e.message)
     else:
         form = CommentForm()
-    comment_list = Comment.objects.filter(product__id=product.id,
-                                          created_at__lte=last_day,
-                                          created_at__gte=today).\
-                                            order_by('-created_at')
+    comment_list = Comment.objects.filter(product__id=product.id)\
+        .filter(created_at__gte=last_day,created_at__lte=today)\
+        .order_by('-created_at')
     return render(request, 'product/product.html',
                   {'product': product, 'now': now, 'form': form,
                    'comment_list': comment_list},
