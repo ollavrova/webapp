@@ -6,15 +6,11 @@ from selenium import webdriver
 
 
 class TestProductPageWithSelenium(TestCase):
-    fixtures = ['initial_data.json',]
+    fixtures = ['initial_data.json', ]
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
-        self.product = Product.objects.create(
-            name='Item-1',
-            description='dggf hgf gh gh gh fh',
-            price='111.50'
-        )
+        self.product = Product.objects.last()
         self.auth = {"username": "admin", "password": "admin"}
 
     def tearDown(self):
@@ -24,12 +20,12 @@ class TestProductPageWithSelenium(TestCase):
         """
         check visibility info about product on the page
         """
-        self.browser.get(self.live_server_url + self.product.slug+'/')
+        self.browser.get(self.live_server_url + '/' + self.product.slug)
         title = self.browser.find_element_by_tag_name('title')
         self.assertTrue(title.text == self.product.name)
         price = self.browser.find_element_by_id('product-price')
         self.assertTrue(price.is_displayed())
-        self.assertTrue(price.text == '$'+self.product.price)
+        self.assertTrue(price.text == '$'+str(self.product.price))
         name = self.browser.find_element_by_id('product-name')
         self.assertTrue(name.is_displayed())
         self.assertTrue(price.text == self.product.name)
@@ -44,7 +40,7 @@ class TestProductPageWithSelenium(TestCase):
         self.assertTrue(comments.text == self.product1.comments.count+' reviews')
 
     def test_commenting(self):
-        self.browser.get(self.live_server_url + self.product.slug+'/')
+        self.browser.get(self.live_server_url + '/' + self.product.slug)
         comment_name = self.browser.find_element_by_id('id_user')
         self.assertTrue(comment_name.is_displayed())
         comment_email = self.browser.find_element_by_id('id_email')
@@ -61,11 +57,11 @@ class TestProductPageWithSelenium(TestCase):
         self.assertTrue(success.text == 'Your comment added.')
 
     def test_likes(self):
-        self.browser.get(self.live_server_url + 'login/')
+        self.browser.get(self.live_server_url + '/login')
         self.browser.find_element_by_id('id_username').send_keys(self.auth['username'])
         self.browser.find_element_by_id('id_password').send_keys(self.auth['password'])
         self.browser.find_element_by_id('submit').click()
-        self.browser.get(self.live_server_url + self.product.slug + '/')
+        self.browser.get(self.live_server_url + '/' + self.product.slug)
         self.assertTrue(self.browser.find_element_by_id('logout').is_displayed())
         like = self.browser.find_element_by_id('like')
         self.assertTrue(like.is_displayed())
@@ -93,13 +89,13 @@ class TestMainSet(TestCase):
         """
         test check show info on main page for 1 product only
         """
-        response = self.client.get(reverse('product_view',
+        response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
         self.assertContains(response, self.product.name,
                             status_code=200)
-        self.assertContains(response, '$'+self.product.price, status_code=200)
+        self.assertContains(response, '$'+str(self.product.price), status_code=200)
         self.assertContains(response, self.product.description, status_code=200)
-        self.assertContains(response, self.product.likes_count + ' likes',
+        self.assertContains(response, self.product.like_amount + ' likes',
                             status_code=200)
         self.assertContains(response, self.product.comments.count + ' reviews',
                             status_code=200)
@@ -114,7 +110,7 @@ class TestMainSet(TestCase):
         """
         test for context - if context contains a product
         """
-        response = self.client.get(reverse('product_view',
+        response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
         self.assertEqual(response.context['product'], self.product)
 
@@ -123,7 +119,7 @@ class TestMainSet(TestCase):
         testing what if database is empty - then we have to see 404 page
         """
         Product.objects.all().delete()
-        response = self.client.get(reverse('product_view',
+        response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
         self.assertEqual(response.status_code, 404)
 
@@ -132,7 +128,7 @@ class TestMainSet(TestCase):
         testing auth to page  - checking if exist like button for logged user only
         """
         self.client.post(reverse('login'), self.auth)
-        response = self.client.get(reverse('product_view',
+        response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
 
         self.assertContains(response, 'Logout', status_code=200)
@@ -147,7 +143,7 @@ class TestMainSet(TestCase):
         """
         check for commenting - if comment will be added and showed
         """
-        response = self.client.get(reverse('product_view',
+        response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
         self.assertContains(response, 'Login', status_code=200)
         self.assertNotContains(response, 'Your comment added', status_code=200)
@@ -156,7 +152,7 @@ class TestMainSet(TestCase):
             email='peter@fake.com',
             comments='thanks, great product'
         )
-        response = self.client.post(reverse('product_view',
+        response = self.client.post(reverse('product:product_view',
                                     kwargs={'slug': self.product.slug}), data)
         self.assertContains(response, 'Your comment added', status_code=200)
 
@@ -170,9 +166,9 @@ class TestMainSet(TestCase):
             emali='',
             comments='',
         )
-        response = self.client.post(reverse('product_view',
+        response = self.client.post(reverse('product:product_view',
                                     kwargs={'slug': self.product.slug}), data)
-        self.assertContains(response, 'comment"<ul class="errorlist">' +
+        self.assertContains(response, 'comment<ul class="errorlist">' +
                             '<li>This field is required.</li>')
         self.assertContains(response, 'name"<ul class="errorlist">' +
                                       '<li>This field is required.</li>')
@@ -187,12 +183,14 @@ class TestMainSet(TestCase):
         data = dict(
             slug=self.product.slug,
         )
-        response = self.client.post(reverse('like'),
+        response = self.client.post(reverse('product:like',
+                                            kwargs={'slug': self.product.slug}),
                                     data,
                                     HTTP_X_REQUESTED_WITH="XMLHttpRequest")
 
         self.assertContains(response, 'You liked this', status_code=200)
-        response = self.client.post(reverse('like'),
+        self.assertContains(response.text, 'You liked this', status_code=200)
+        response = self.client.post(reverse('product:like'),
                                     data,
                                     HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertContains(response, 'You disliked this', status_code=200)
