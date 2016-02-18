@@ -10,7 +10,7 @@ from product.models import Product
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product', '0002_auto_20160215_1649'),
+        ('product', '0001_initial'),
     ]
 
     def gen_slug(apps, schema_editor):

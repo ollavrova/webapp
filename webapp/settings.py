@@ -14,6 +14,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 LOG_FILE = os.path.join(BASE_DIR + '/log/log.txt')
 PER_PAGE = 3
 
+try:
+    from local import *
+except ImportError:
+    pass
+
 SITE_ID = 1
 
 # Quick-start development settings - unsuitable for production
@@ -56,11 +61,16 @@ ROOT_URLCONF = 'webapp.urls'
 
 WSGI_APPLICATION = 'webapp.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': os.path.join(BASE_DIR, DB_NAME),
+    #     'USER': 'user',
+    #     'PASSWORD': PASS,
+    #     'HOST': 'localhost',                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
+    #     'PORT': '',
+    # # },
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -180,3 +190,5 @@ LOGGING = {
         },
     }
 }
+
+# FIXTURE_DIRS = 'product/fixtures/'

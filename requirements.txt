@@ -2,3 +2,4 @@ Django ==1.8.9
 django-autoslug
 pytz
 selenium
+psycopg2

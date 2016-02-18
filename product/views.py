@@ -60,7 +60,7 @@ def product_view(request, slug):
     else:
         form = CommentForm()
     comment_list = Comment.objects.filter(product__id=product.id)\
-        .filter(created_at__gte=last_day,created_at__lte=today)\
+        .filter(created_at__gte=last_day, created_at__lte=today)\
         .order_by('-created_at')
     return render(request, 'product/product.html',
                   {'product': product, 'now': now, 'form': form,

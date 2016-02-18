@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('price', models.FloatField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now_add=True)),
+                ('like_amount', models.PositiveIntegerField(default=0)),
             ],
         ),
     ]

@@ -6,13 +6,14 @@ from selenium import webdriver
 
 
 class TestProductPageWithSelenium(TestCase):
+    fixtures = ['initial_data.json',]
 
     def setUp(self):
         self.browser = webdriver.PhantomJS()
         self.product = Product.objects.create(
             name='Item-1',
             description='dggf hgf gh gh gh fh',
-            price=111.50
+            price='111.50'
         )
         self.auth = {"username": "admin", "password": "admin"}
 
@@ -81,16 +82,12 @@ class TestProductPageWithSelenium(TestCase):
 
 
 class TestMainSet(TestCase):
-    fixtures = ['initial_data_test.json']
+    fixtures = ['initial_data.json', ]
 
     def setUp(self):
         self.auth = {"username": "admin", "password": "admin"}
         self.product = Product.objects.first()
-        self.product1 = Product.objects.create(
-            name='Item Random',
-            description='Very useful item for everybody',
-            price=100.00
-        )
+        self.product1 = Product.objects.get(pk=2)
 
     def test_show_page(self):
         """

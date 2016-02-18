@@ -155,8 +155,8 @@
       "comment": " fghfh gfhfg",
       "created_at": "2016-02-17T13:11:45.973Z",
       "product": 3,
-      "user": "fgfg",
-      "email": "krocozabr@gmail.com"
+      "user": "user fgfg",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 1
@@ -166,8 +166,8 @@
       "comment": "fghghgfh",
       "created_at": "2016-02-17T13:11:52.666Z",
       "product": 3,
-      "user": "gfhfg",
-      "email": "krocozabr@gmail.com"
+      "user": "user gfhfg",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 2
@@ -177,8 +177,8 @@
       "comment": "trytyrtyr ",
       "created_at": "2016-02-17T13:13:20.772Z",
       "product": 4,
-      "user": "t",
-      "email": "krocozabr@gmail.com"
+      "user": "user tyt",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 3
@@ -188,8 +188,8 @@
       "comment": "ty yu tyu",
       "created_at": "2016-02-17T13:18:15.495Z",
       "product": 2,
-      "user": "ty",
-      "email": "krocozabr@gmail.com"
+      "user": "user ty",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 4
@@ -199,8 +199,8 @@
       "comment": " ygh g h",
       "created_at": "2016-02-17T15:42:35.524Z",
       "product": 3,
-      "user": "555",
-      "email": "ktu1995-2000@ya.ru"
+      "user": "user555",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 5
@@ -208,10 +208,10 @@
   {
     "fields": {
       "comment": "gh fg hgfh ",
-      "created_at": null,
+      "created_at": "2016-02-17T15:48:35.524Z",
       "product": 2,
-      "user": "1",
-      "email": "lavrova.olga.n@gmail.com"
+      "user": "user1",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 6
@@ -221,10 +221,64 @@
       "comment": "lkn;lk h jjjjjjjjjjjjjjjjj",
       "created_at": "2016-02-17T23:35:30.422Z",
       "product": 2,
-      "user": "ty tryrtyrty",
-      "email": "krocozabr@ya.ru"
+      "user": "user ty tryrtyrty",
+      "email": "fake@fake.com"
     },
     "model": "product.comment",
     "pk": 7
+  },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2016-02-05T11:44:25.430Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$12000$YLvu1hufQe5N$Yz29siaHHduntfDA4R7RrH5KfoLuAiBkV51ITEQRvnM=",
+            "email": "info0@example.com",
+            "date_joined": "2016-02-05T11:44:25.430Z"
+        }
+    },
+  {
+    "fields": {
+      "username": "user111",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2016-02-17T15:42:08.104Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$MsPHxsmCNOcs$jv3XGwc898j9EUbyCdY8ASMxvOzPwSNsm9zbukvvuxw=",
+      "email": "",
+      "date_joined": "2016-02-17T15:41:26Z"
+    },
+    "model": "auth.user",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "username": "user222",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$7A45FoJhnSTu$O0WImOGfpMw517pZ3j/wTtc+fNJXB5nwV5Sq6QKVKT8=",
+      "email": "",
+      "date_joined": "2016-02-17T15:41:47.700Z"
+    },
+    "model": "auth.user",
+    "pk": 3
   }
 ]

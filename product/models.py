@@ -17,17 +17,13 @@ class Product(models.Model):
 
     @property
     def total_likes(self):
-        """
-        Likes for the company
-        :return: Integer: Likes for the company
-        """
         return self.likes.count()
 
     def set_like_amount(self):
         self.like_amount = self.total_likes
 
     def __unicode__(self):
-        return str(self.id)
+        return str(self.pk)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
