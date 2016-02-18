@@ -1,3 +1,4 @@
+import json
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from product.models import Product
@@ -41,15 +42,15 @@ class TestProductPageWithSelenium(TestCase):
 
     def test_commenting(self):
         self.browser.get(self.live_server_url + '/' + self.product.slug)
-        comment_name = self.browser.find_element_by_id('id_user')
-        self.assertTrue(comment_name.is_displayed())
+        comment_user = self.browser.find_element_by_id('id_user')
+        self.assertTrue(comment_user.is_displayed())
         comment_email = self.browser.find_element_by_id('id_email')
         self.assertTrue(comment_email.is_displayed())
         comment_text = self.browser.find_element_by_id('id_comment')
         self.assertTrue(comment_text.is_displayed())
-        comment_name.send_keys("Ludvig")
+        comment_user.send_keys("Ludvig")
         comment_email.send_keys("Ludvig@gmail.com")
-        comment_name.send_keys("I like this product!")
+        comment_text.send_keys("I like this product!")
         self.driver.find_element_by_id("sendbutton").click()
         self.browser.get(self.live_server_url + self.product.slug+'/')
         success = self.browser.find_element_by_css_selector('p.success')
@@ -91,20 +92,14 @@ class TestMainSet(TestCase):
         """
         response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
-        self.assertContains(response, self.product.name,
-                            status_code=200)
-        self.assertContains(response, '$'+str(self.product.price), status_code=200)
-        self.assertContains(response, self.product.description, status_code=200)
-        self.assertContains(response, self.product.like_amount + ' likes',
-                            status_code=200)
-        self.assertContains(response, self.product.comments.count + ' reviews',
-                            status_code=200)
-        self.assertNotContains(response, self.product1.name,
-                               status_code=200)
-        self.assertNotContains(response, self.product1.description,
-                               status_code=200)
-        self.assertNotContains(response, self.product1.price,
-                               status_code=200)
+        self.assertContains(response, self.product.name)
+        self.assertContains(response, '$'+str(self.product.price))
+        self.assertContains(response, self.product.description)
+        self.assertContains(response, str(self.product.like_amount) + ' likes')
+        self.assertContains(response, str(self.product.comments.count()) + ' reviews')
+        self.assertNotContains(response, self.product1.name)
+        self.assertNotContains(response, self.product1.description)
+        self.assertNotContains(response, self.product1.price)
 
     def test_render_context(self):
         """
@@ -130,14 +125,14 @@ class TestMainSet(TestCase):
         self.client.post(reverse('login'), self.auth)
         response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
-
-        self.assertContains(response, 'Logout', status_code=200)
-        self.assertContains(response, '<input type="button" id="like" name="' +
-                            self.product.slug)
-        self.assertEqual(self.client.get(reverse('logout')).status_code, 302)
-        self.assertContains(response, 'Login', status_code=200)
-        self.assertNotContains(response, '<input type="button" id="like" name="' +
-                            self.product.slug)
+        self.assertEqual(self.client.get(reverse('product:product_view',
+                         kwargs={'slug': self.product.slug})).status_code,
+                         200)
+        self.assertContains(response, '<input type="button" id="like" name="')
+        resp = self.client.get(reverse('logout')).status_code
+        self.assertEqual(resp, 302)
+        self.assertContains(resp, 'Login')
+        self.assertNotContains(response, '<input type="button" id="like" name="')
 
     def test_commenting(self):
         """
@@ -145,16 +140,16 @@ class TestMainSet(TestCase):
         """
         response = self.client.get(reverse('product:product_view',
                                            kwargs={'slug': self.product.slug}))
-        self.assertContains(response, 'Login', status_code=200)
-        self.assertNotContains(response, 'Your comment added', status_code=200)
+        self.assertContains(response, 'Login')
+        self.assertNotContains(response, 'Your comment added')
         data = dict(
-            name='Peter',
+            user='Peter',
             email='peter@fake.com',
-            comments='thanks, great product'
+            comment='thanks, great product'
         )
         response = self.client.post(reverse('product:product_view',
                                     kwargs={'slug': self.product.slug}), data)
-        self.assertContains(response, 'Your comment added', status_code=200)
+        self.assertContains(response, 'Your comment added')
 
     def test_show_errors(self):
         """
@@ -162,18 +157,17 @@ class TestMainSet(TestCase):
         """
 
         data = dict(
-            name='',
+            user='',
             emali='',
-            comments='',
+            comment='',
         )
         response = self.client.post(reverse('product:product_view',
                                     kwargs={'slug': self.product.slug}), data)
-        self.assertContains(response, 'comment<ul class="errorlist">' +
-                            '<li>This field is required.</li>')
-        self.assertContains(response, 'name"<ul class="errorlist">' +
-                                      '<li>This field is required.</li>')
-        self.assertContains(response, 'email"<ul class="errorlist"><li>' +
-                            'This field is required.</li>')
+
+        self.assertIn('<div id="user-errors" class="alert',
+                      response.content)
+        self.assertContains(response, '<div id="email-errors" class="alert')
+        self.assertContains(response, '<div id="comment-errors" class="alert')
 
     def test_likes(self):
         """
@@ -183,15 +177,15 @@ class TestMainSet(TestCase):
         data = dict(
             slug=self.product.slug,
         )
-        response = self.client.post(reverse('product:like',
-                                            kwargs={'slug': self.product.slug}),
-                                    data,
-                                    HTTP_X_REQUESTED_WITH="XMLHttpRequest")
-
-        self.assertContains(response, 'You liked this', status_code=200)
-        self.assertContains(response.text, 'You liked this', status_code=200)
-        response = self.client.post(reverse('product:like'),
-                                    data,
-                                    HTTP_X_REQUESTED_WITH="XMLHttpRequest")
-        self.assertContains(response, 'You disliked this', status_code=200)
-
+        resp = self.client.post(reverse('product:like',
+                                kwargs={'slug': self.product.slug}),
+                                data,
+                                HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        response = json.loads(resp.content)
+        act = response.get('act', '')
+        if act == 'Dislike':
+            self.assertEqual(response.get('message'), 'You liked this')
+        elif act == 'Like':
+            self.assertEqual(response.get('message'), 'You disliked this')
+        else:
+            self.assertTrue(act)
