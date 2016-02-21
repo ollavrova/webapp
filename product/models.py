@@ -9,7 +9,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', unique=True, always_update=True, max_length=250)
     description = models.TextField(blank=True)
-    price = models.FloatField()
+    price = models.DecimalField(decimal_places=2, max_digits=11)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField()
     likes = models.ManyToManyField(User, related_name='likes')
