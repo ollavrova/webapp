@@ -24,7 +24,7 @@ $(document).ready(function () {
                        '<span aria-hidden="true">&times;</span></button><p class="success">'+
                        response.message + '</p></div>');
                    $('#likes').text(response.likes_count+' likes');
-                   $('#like').val(response.act);
+                   $('#like').text(response.act);
                 },
                 error: function(rs, e) {
                     $('#result_like').text(e);

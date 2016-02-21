@@ -18,8 +18,8 @@
                     <p id="comments-count" class="pull-right">{{ product.comments.count }} reviews ({{ comment_list.count }} in the last 24 hours)</p>
                     <p id="likes">{{ product.likes.count }} likes</p>
                     {% if user.is_authenticated %}
-                        <input type="button" id="like" name="{{ product.slug }}"
-                               action="{% url 'product:like' product.slug %}" value="Like"/>
+                        <button type="submit" id="like" name="{{ product.slug }}" class="btn btn-success sendbutton"
+                               action="{% url 'product:like' product.slug %}" />Like</button>
                     {% endif %}
                 </div>
             </div>
