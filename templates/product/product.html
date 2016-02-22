@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ product.name }}{% endblock title %}
+{% block title %}{{ block.super }} - {{ product.name }}{% endblock title %}
 {% block content %}
 
     <div class="row">
@@ -12,29 +12,22 @@
                 <div class="caption-full">
                     <h4 class="pull-right" id="product-price">${{ product.price }}</h4>
                     <h4><a href="#" id="product-name">{{ product.name }}</a></h4>
+
                     <p id="product-description">{{ product.description }}</p>
                 </div>
                 <div class="ratings">
-                    <p id="comments-count" class="pull-right">{{ product.comments.count }} reviews ({{ comment_list.count }} in the last 24 hours)</p>
+                    <p id="comments-count" class="pull-right">{{ product.comments.count }} reviews
+                        ({{ comment_list.count }} in the last 24 hours)</p>
+
                     <p id="likes">{{ product.likes.count }} likes</p>
                     {% if user.is_authenticated %}
                         <button type="submit" id="like" name="{{ product.slug }}" class="btn btn-success sendbutton"
-                               action="{% url 'product:like' product.slug %}" />Like</button>
+                                action="{% url 'product:like' product.slug %}"/>Like</button>
                     {% endif %}
                 </div>
             </div>
             <div id="result_like"></div>
-            {% block messages %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} messages" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span></button>
-                            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endblock messages %}
+            {{ block.super }}
 
             <div class="well">
                 <form id="list-comments" action="{% url 'product:product_view' product.slug %}" method="post">
