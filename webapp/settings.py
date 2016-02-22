@@ -14,11 +14,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 LOG_FILE = os.path.join(BASE_DIR + '/log/log.txt')
 PER_PAGE = 3
 
-try:
-    from local import *
-except ImportError:
-    pass
-
 SITE_ID = 1
 
 # Quick-start development settings - unsuitable for production
@@ -192,4 +187,7 @@ LOGGING = {
     }
 }
 
-# FIXTURE_DIRS = 'product/fixtures/'
+try:
+    from local import *
+except ImportError:
+    pass
