@@ -47,3 +47,16 @@
 - оптимизировать количество запросов к базе данных на страницах (можно использовать кеш, но в первую очередь уменьшать количество ненужных запросов)
 
 - базовый язык - английский (в т.ч. для комментариев и строковых констант)
+
+###Instructions:
+
+Clone the project and go to the project folder. You can use next command:
+- pip install -r requirements.txt
+- make migrate
+- make run
+- make test
+
+###For log in to the site you can use next credentials(from fixtures):
+- login - admin, password - admin
+- login - user111, password - 111
+- login user222, password - 222
