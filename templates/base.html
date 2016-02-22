@@ -50,7 +50,9 @@
         {% block messages %}
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} messages" role="alert">
+                    <div class="alert alert-{{ message.tags }}
+                     {% ifequal message.tags 'error' %} alert-danger {% endifequal %}
+                     messages" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
                         <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>

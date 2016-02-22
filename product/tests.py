@@ -26,7 +26,7 @@ class TestProductPageWithSelenium(LiveServerTestCase):
         """
         self.browser.get(self.live_server_url + '/products/' +
                          self.product.slug + '/')
-        self.assertEqual(self.browser.title, self.product.name)
+        self.assertIn(self.product.name, self.browser.title)
         price = self.browser.find_element_by_id('product-price')
         self.assertTrue(price.is_displayed())
         self.assertTrue(price.text == '$'+str(self.product.price))

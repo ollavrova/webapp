@@ -13,8 +13,8 @@
         </div>
         <div class="col-md-10">
             <div class="row">
-    {% if products %}
-                    {% for product in products %}
+    {% if product_list %}
+                    {% for product in product_list %}
                         <div class="col-md-9">
                             <div class="thumbnail">
                                 <div class="caption-full">
@@ -32,21 +32,23 @@
                             </div>
                         </div>
                   {% endfor %}
+        {% if paginated %}
                   <div class="pagination">
                     <span class="step-links">
-                        {% if products.has_previous %}
-                            <a href="?page={{ products.previous_page_number }}">previous</a>
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
                         {% endif %}
 
                         <span class="current">
-                            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                         </span>
 
-                        {% if products.has_next %}
-                            <a href="?page={{ products.next_page_number }}">next</a>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
                         {% endif %}
                     </span>
                 </div>
+            {% endif %}
     {% else %}
         There is no products yet...
     {% endif %}

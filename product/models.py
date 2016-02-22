@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from autoslug import AutoSlugField
 from django.contrib.auth.models import User
@@ -26,6 +27,9 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.like_amount = self.total_likes
         super(Product, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('product:product_view', args=[self.slug])
 
 
 class Comment(models.Model):

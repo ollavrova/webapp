@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ block.super }} - {{ object.name }}{% endblock title %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead"><a href="{% url 'product:products' %}">back</a></p>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <div class="caption-full">
+                    <h4 class="pull-right" id="product-price">${{ object.price }}</h4>
+                    <h4><a href="#" id="product-name">{{ object.name }}</a></h4>
+
+                    <p id="product-description">{{ object.description }}</p>
+                </div>
+                <div class="ratings">
+                    <p id="comments-count" class="pull-right">{{ object.comments.count }} reviews
+                        ({{ comment_list.count }} in the last 24 hours)</p>
+
+                    <p id="likes">{{ object.likes.count }} likes</p>
+                    {% if user.is_authenticated %}
+                        <button type="submit" id="like" name="{{ object.slug }}" class="btn btn-success sendbutton"
+                                action="{% url 'product:like' slug=object.slug %}"/>Like</button>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="result_like"></div>
+            {{ block.super }}
+            <div class="well">
+                {% if comment_list %}
+                    {% for comment in comment_list %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ comment.user }}
+                                <span class="pull-right">{{ comment.created_at|timesince }} ago</span>
+
+                                <p> {{ comment.comment }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.errors %}
+                    <!-- Error messaging -->
+                    <p>There were some errors in the information you entered. Please correct the following:</p>
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <p>{{ field.label }}: {{ field.errors|striptags }}</p> {% endif %}
+                    {% endfor %}
+                    <!-- /Error messaging -->
+                {% endif %}
+
+                <form id="list-comments" action="{% url 'product:comment_add' slug=object.slug %}" method="post">
+                    {% csrf_token %}
+                    <div id="errors" class="inner alert-error">
+
+                    </div>
+                    {{ form.as_p }}
+                    <div class="form-group" id="sendwrapper">
+                        <input type="submit" id="sendbutton" name="submit"
+                               class="btn btn-success sendbutton" value="Leave a Comment">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_head %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock %}

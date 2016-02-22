@@ -1,66 +1,55 @@
 import json
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models.functions import Length
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.views.generic import ListView, DetailView, View, CreateView
 from .models import Product, Comment
-from django.template import RequestContext
 from django.contrib import messages
 from product.forms import CommentForm
 from webapp.settings import PER_PAGE
 from datetime import timedelta
 
 
-def products(request):
-    sort = request.GET.get('sort', None)
-    if sort == 'like':
-        # product_list = Product.objects.order_by(Length('likes').asc())
-        product_list = Product.objects.order_by('like_amount')
-    elif sort == '-like':
-        # product_list = Product.objects.order_by(Length('likes').desc())
-        product_list = Product.objects.order_by('-like_amount')
-    else:
-        product_list = Product.objects.all()
-    paginator = Paginator(product_list, PER_PAGE)
-
-    page = request.GET.get('page')
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        products = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        products = paginator.page(paginator.num_pages)
-    return render(request, 'product/index.html', {
-        'products': products,
-    })
+class ProductList(ListView):
+    template_name = 'product/index.html'
+    model = Product
+    paginate_by = PER_PAGE
 
 
-def product_view(request, slug):
-    last_day = timezone.now() - timedelta(hours=24)
-    product = get_object_or_404(Product, slug=slug)
-    if request.method == 'POST':
-        form = CommentForm(request.POST or None)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.product = product
-            try:
-                comment.save()
-                messages.success(request, 'Your comment added.')
-            except Exception as e:
-                messages.error(request, e.message)
-    else:
-        form = CommentForm()
-    comment_list = Comment.objects.filter(product__id=product.id)\
-                                  .filter(created_at__gte=last_day)\
-                                  .order_by('-created_at')
-    return render(request, 'product/product.html',
-                  {'product': product, 'form': form,
-                   'comment_list': comment_list},
-                  RequestContext(request))
+class ProductDetail(DetailView):
+    model = Product
+
+    def get_context_data(self, **kwargs):
+        last_day = timezone.now() - timedelta(hours=24)
+        context = super(ProductDetail, self).get_context_data(**kwargs)
+        context['comment_list'] = Comment.objects.filter(product=self.object)\
+                                                 .filter(created_at__gte=last_day)\
+                                                 .order_by('-created_at')
+        context['form'] = CommentForm(initial={'product': self.object})
+        return context
+
+
+class CommentAdd(CreateView):
+    model = Comment
+    form_class = CommentForm
+    http_method_names = ['post']
+    template_name = 'product/product_detail.html'
+
+    def form_valid(self, form):
+        # if form.cleaned_data['email'] is False:
+        #     form.add_error('email', 'Please fill this field')
+        #     return self.form_invalid(form)
+        messages.success(self.request, 'Your comment added.')
+        return super(CommentAdd, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Error' + str(form.errors))
+        return super(CommentAdd, self).form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('product:product_view', args=[self.object.product.slug])
 
 
 @login_required
