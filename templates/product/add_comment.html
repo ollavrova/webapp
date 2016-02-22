@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 {{ comment.user }}
-                <span class="pull-right">{{ comment.created_at|timesince:now }} ago</span>
+                <span class="pull-right">{{ comment.created_at|timesince }} ago</span>
                 <p> {{ comment.comment }}</p>
             </div>
         </div>

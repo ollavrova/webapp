@@ -10,12 +10,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from product.forms import CommentForm
 from webapp.settings import PER_PAGE
-
-
-from datetime import datetime, timedelta
-
-today = datetime.now()
-last_day = today - timedelta(hours=24)
+from datetime import timedelta
 
 
 def products(request):
@@ -45,7 +40,7 @@ def products(request):
 
 
 def product_view(request, slug):
-    now = timezone.now()
+    last_day = timezone.now() - timedelta(hours=24)
     product = get_object_or_404(Product, slug=slug)
     if request.method == 'POST':
         form = CommentForm(request.POST or None)
@@ -60,10 +55,10 @@ def product_view(request, slug):
     else:
         form = CommentForm()
     comment_list = Comment.objects.filter(product__id=product.id)\
-        .filter(created_at__gte=last_day, created_at__lte=today)\
-        .order_by('-created_at')
+                                  .filter(created_at__gte=last_day)\
+                                  .order_by('-created_at')
     return render(request, 'product/product.html',
-                  {'product': product, 'now': now, 'form': form,
+                  {'product': product, 'form': form,
                    'comment_list': comment_list},
                   RequestContext(request))
 
