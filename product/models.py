@@ -1,7 +1,5 @@
-from autoslug.utils import slugify
 from django.db import models
 from autoslug import AutoSlugField
-from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -11,7 +9,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=11)
     created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField()
+    modified_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes')
     like_amount = models.PositiveIntegerField(default=0)
 
@@ -26,8 +24,6 @@ class Product(models.Model):
         return str(self.pk)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        self.modified_at = timezone.now()
         self.like_amount = self.total_likes
         super(Product, self).save(*args, **kwargs)
 
