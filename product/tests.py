@@ -134,11 +134,14 @@ class TestMainSet(TestCase):
         data = dict(
             user='Peter',
             email='peter@fake.com',
-            comment='thanks, great product'
+            comment='thanks, great product',
+            product=self.product.pk
         )
-        response = self.client.post(reverse('product:product_view',
+        self.client.post(reverse('product:comment_add',
                                     kwargs={'slug': self.product.slug}), data)
-        self.assertContains(response, 'Your comment added')
+        response = self.client.get(reverse('product:product_view',
+                                           kwargs={'slug': self.product.slug}))
+        self.assertContains(response, 'Your comment added.')
 
     def test_show_errors(self):
         """
@@ -150,13 +153,13 @@ class TestMainSet(TestCase):
             emali='',
             comment='',
         )
-        response = self.client.post(reverse('product:product_view',
+        response = self.client.post(reverse('product:comment_add',
                                     kwargs={'slug': self.product.slug}), data)
 
-        self.assertIn('<div id="user-errors" class="alert',
-                      response.content)
-        self.assertContains(response, '<div id="email-errors" class="alert')
-        self.assertContains(response, '<div id="comment-errors" class="alert')
+        self.assertContains(response, 'Error!')
+        self.assertContains(response, 'User: This field is required.')
+        self.assertContains(response, 'Email: This field is required.')
+        self.assertContains(response, 'Comment: This field is required.')
 
     def test_likes(self):
         """
