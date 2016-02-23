@@ -32,7 +32,7 @@
                             </div>
                         </div>
                   {% endfor %}
-        {% if paginated %}
+        {% if is_paginated %}
                   <div class="pagination">
                     <span class="step-links">
                         {% if page_obj.has_previous %}
