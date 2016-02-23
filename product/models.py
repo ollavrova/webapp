@@ -39,4 +39,7 @@ class Comment(models.Model):
     comment = models.CharField(max_length=500, null=False)
     product = models.ForeignKey(Product, related_name='comments')
 
+    def get_absolute_url(self):
+        return reverse('product:product_view', args=[self.product.slug])
+
 

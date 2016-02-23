@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.generic import ListView, DetailView, View, CreateView
+from django.views.generic import ListView, DetailView, View, CreateView, FormView
 from .models import Product, Comment
 from django.contrib import messages
 from product.forms import CommentForm
@@ -37,19 +37,23 @@ class CommentAdd(CreateView):
     http_method_names = ['post']
     template_name = 'product/product_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(CommentAdd, self).get_context_data(**kwargs)
+        product = Product.objects.filter(slug=self.kwargs['slug']).first()
+        context['product'] = product
+        return context
+
     def form_valid(self, form):
-        # if form.cleaned_data['email'] is False:
-        #     form.add_error('email', 'Please fill this field')
-        #     return self.form_invalid(form)
         messages.success(self.request, 'Your comment added.')
         return super(CommentAdd, self).form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Error' + str(form.errors))
+        messages.error(self.request, 'Error!')
         return super(CommentAdd, self).form_invalid(form)
 
     def get_success_url(self):
-        return reverse('product:product_view', args=[self.object.product.slug])
+        product = Product.objects.filter(slug=self.kwargs['slug']).first()
+        return reverse('product:product_view', kwargs={'slug': product.slug})
 
 
 @login_required

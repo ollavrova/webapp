@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ block.super }} - {{ object.name }}{% endblock title %}
+{% block title %}{{ block.super }} - {{ product.name }}{% endblock title %}
 {% block content %}
 
     <div class="row">
@@ -10,19 +10,19 @@
         <div class="col-md-9">
             <div class="thumbnail">
                 <div class="caption-full">
-                    <h4 class="pull-right" id="product-price">${{ object.price }}</h4>
-                    <h4><a href="#" id="product-name">{{ object.name }}</a></h4>
+                    <h4 class="pull-right" id="product-price">${{ product.price }}</h4>
+                    <h4><a href="#" id="product-name">{{ product.name }}</a></h4>
 
-                    <p id="product-description">{{ object.description }}</p>
+                    <p id="product-description">{{ product.description }}</p>
                 </div>
                 <div class="ratings">
-                    <p id="comments-count" class="pull-right">{{ object.comments.count }} reviews
+                    <p id="comments-count" class="pull-right">{{ product.comments.count }} reviews
                         ({{ comment_list.count }} in the last 24 hours)</p>
 
-                    <p id="likes">{{ object.likes.count }} likes</p>
+                    <p id="likes">{{ product.likes.count }} likes</p>
                     {% if user.is_authenticated %}
-                        <button type="submit" id="like" name="{{ object.slug }}" class="btn btn-success sendbutton"
-                                action="{% url 'product:like' slug=object.slug %}"/>Like</button>
+                        <button type="submit" id="like" name="{{ product.slug }}" class="btn btn-success sendbutton"
+                                action="{% url 'product:like' product.slug %}"/>Like</button>
                     {% endif %}
                 </div>
             </div>
@@ -43,28 +43,30 @@
                     {% endfor %}
                 {% endif %}
 
-                {% if form.errors %}
-                    <!-- Error messaging -->
-                    <p>There were some errors in the information you entered. Please correct the following:</p>
-                    {{ form.non_field_errors }}
-                    {% for field in form %}
-                        {% if field.errors %}
-                            <p>{{ field.label }}: {{ field.errors|striptags }}</p> {% endif %}
-                    {% endfor %}
-                    <!-- /Error messaging -->
-                {% endif %}
-
-                <form id="list-comments" action="{% url 'product:comment_add' slug=object.slug %}" method="post">
+                <form id="list-comments" action="{% url 'product:comment_add' product.slug %}" method="post">
                     {% csrf_token %}
-                    <div id="errors" class="inner alert-error">
 
-                    </div>
+                        {% if form.errors %}
+                        <div id="errors" class="alert alert-danger">
+                            <!-- Error messaging -->
+                            <p>There were some errors in the information you entered. Please correct the following:</p>
+                            {{ form.non_field_errors }}
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <p class="alert-danger">{{ field.label }}: {{ field.errors|striptags }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- /Error messaging -->
+                        </div>
+                        {% endif %}
+
                     {{ form.as_p }}
                     <div class="form-group" id="sendwrapper">
                         <input type="submit" id="sendbutton" name="submit"
                                class="btn btn-success sendbutton" value="Leave a Comment">
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
