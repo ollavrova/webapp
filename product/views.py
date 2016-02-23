@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -12,10 +13,53 @@ from webapp.settings import PER_PAGE
 from datetime import timedelta
 
 
-class ProductList(ListView):
+VALID_SORTS = {
+    "like": "like_amount",
+    "unlike": "-like_amount",
+}
+
+DEFAULT_SORT = 'like'
+
+
+class SortMixin(object):
+    """
+    View mixin which provides sorting for ListView.
+    """
+    default_sort_params = None
+
+    def sort_queryset(self, qs, sort_by):
+        return qs.order_by(sort_by)
+
+    def get_default_sort_params(self):
+        if self.default_sort_params is None:
+            raise ImproperlyConfigured(
+                "'SortMixin' requires the 'default_sort_params' attribute "
+                "to be set.")
+        return self.default_sort_params
+
+    def get_sort_params(self):
+        default_sort_by = self.get_default_sort_params()
+        sort = self.request.GET.get('sort_by', default_sort_by)
+        sort_by = VALID_SORTS.get(sort, DEFAULT_SORT)
+        return sort_by
+
+    def get_queryset(self):
+        return self.sort_queryset(
+            super(SortMixin, self).get_queryset(),
+            self.get_sort_params())
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SortMixin, self).get_context_data(*args, **kwargs)
+        sort_by = self.get_sort_params()
+        context['sort_by'] = sort_by
+        return context
+
+
+class ProductList(SortMixin, ListView):
     template_name = 'product/index.html'
     model = Product
     paginate_by = PER_PAGE
+    default_sort_params = DEFAULT_SORT
 
 
 class ProductDetail(DetailView):
