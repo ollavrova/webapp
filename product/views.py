@@ -40,7 +40,7 @@ class SortMixin(object):
     def get_sort_params(self):
         default_sort_by = self.get_default_sort_params()
         sort = self.request.GET.get('sort_by', default_sort_by)
-        sort_by = VALID_SORTS.get(sort, DEFAULT_SORT)
+        sort_by = VALID_SORTS.get(sort, VALID_SORTS[DEFAULT_SORT])
         return sort_by
 
     def get_queryset(self):
@@ -60,6 +60,13 @@ class ProductList(SortMixin, ListView):
     model = Product
     paginate_by = PER_PAGE
     default_sort_params = DEFAULT_SORT
+
+    def get_context_data(self, *args, **kwargs):
+        path = ''
+        path += "%s" % "&".join(["%s=%s" % (key, value) for (key, value) in self.request.GET.items() if not key=='page'])
+        context = super(ProductList, self).get_context_data(**kwargs)
+        context['path'] = path
+        return context
 
 
 class ProductDetail(DetailView):

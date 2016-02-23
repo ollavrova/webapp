@@ -6,8 +6,8 @@
         <div class="col-md-2">
             <div>Sorting by likes
                 <p>
-                <strong> <a href="{% url 'product:products' %}?sort_by=unlike" class="form-group-item lead"> &uArr;</a></strong>
-                <strong> <a href="{% url 'product:products' %}?sort_by=like" class="form-group-item lead"> &dArr;</a></strong>
+                <strong> <a href="{% url 'product:products' %}?sort_by=like" class="form-group-item lead"> &uArr;</a></strong>
+                <strong> <a href="{% url 'product:products' %}?sort_by=unlike" class="form-group-item lead"> &dArr;</a></strong>
                 </p>
             </div>
         </div>
@@ -36,7 +36,7 @@
                   <div class="pagination">
                     <span class="step-links">
                         {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            <a href="?page={{ page_obj.previous_page_number }}{% if path %}&{{path}}{% endif %}">previous</a>
                         {% endif %}
 
                         <span class="current">
@@ -44,7 +44,7 @@
                         </span>
 
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.next_page_number }}{% if path %}&{{path}}{% endif %}">next</a>
                         {% endif %}
                     </span>
                 </div>
